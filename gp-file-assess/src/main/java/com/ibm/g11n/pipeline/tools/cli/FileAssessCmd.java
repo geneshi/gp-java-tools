@@ -8,6 +8,7 @@ import com.ibm.g11n.pipeline.client.ServiceClient;
 import com.ibm.g11n.pipeline.resfilter.ResourceFilter;
 import com.ibm.g11n.pipeline.resfilter.ResourceFilterFactory;
 import com.ibm.g11n.pipeline.tools.validator.BaseValidator;
+import com.ibm.g11n.pipeline.tools.validator.JavaValidator;
 import com.ibm.g11n.pipeline.tools.validator.JsonValidator;
 
 /**
@@ -24,10 +25,16 @@ public class FileAssessCmd extends BaseCmd {
     private String type;
 
     @Parameter(
-            names = {"-f", "--file"},
+            names = {"-f", "-file"},
             description = "File name to be imported",
             required = true)
     private String fileName;
+    
+    @Parameter(
+            names = {"-b", "-bundle_prefix"},
+            description = "The prefix of a bundle name",
+            required = false)
+    private String bundle_prefix;
 
     
     private String detectType(String fileName) {
@@ -46,15 +53,21 @@ public class FileAssessCmd extends BaseCmd {
         if(tba_file.exists() && tba_file.isFile()) {
             if(checkType(type)) {
                 ServiceClient gpClient = getClient();
+                BaseValidator validator = null;
                 switch(type) {
                 case "JSON":
-                    JsonValidator jv = new JsonValidator(tba_file, type);
-                    jv.check(jsonCreds, gpClient);
+                    validator = new JsonValidator(tba_file, type, bundle_prefix);
+                    break;
+                case "JAVA":
+                case "JAVAUTF8":
+                case "JAVAMSG":
+                case "JAVAMSGUTF8":
+                    validator = new JavaValidator(tba_file, type, bundle_prefix);
                     break;
                 default:
-                    BaseValidator validator = new BaseValidator(tba_file, type);
-                    validator.check(jsonCreds, gpClient);
+                    validator = new BaseValidator(tba_file, type, bundle_prefix);
                 }
+                validator.check(jsonCreds, gpClient);
             } else {
                 System.err.printf("Failed - Resource filter for %s is not available.", type);
             }

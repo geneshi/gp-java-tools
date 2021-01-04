@@ -32,9 +32,9 @@ public class ListBundlesCmdTest {
     
     @Test
     public void testt() {
-        String[] testFiles = {"E:\\\\notExist.json", "E:\\notJsonRoot.json", "E:\\duplicateKey.json", "E:\\test.json"};
-        for(int i = 0; i < testFiles.length; i++) {
-            String[] cmd = {"assess-file", "-j", "E:\\GP\\Github\\gp-java-tools\\test-gpconfig.json", "-t", "JSON", "-f", testFiles[i]};
+        String[] testFiles = {"E:\\\\notExist.json", "E:\\notJsonRoot.json", "E:\\duplicateKey.json", "E:\\test.json", "E:\\messages.properties"};
+        for(int i = 4; i < testFiles.length; i++) {
+            String[] cmd = {"assess-file", "-j", "E:\\GP\\Github\\gp-java-tools\\test-gpconfig.json", "-t", "JAVA", "-b", "ABC", "-f", testFiles[i]};
             GPCmd.main(cmd);
         }
     }

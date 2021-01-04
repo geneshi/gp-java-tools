@@ -17,8 +17,8 @@ import com.ibm.g11n.pipeline.resfilter.impl.BomInputStream;
 
 public class JsonValidator extends BaseValidator {
     
-    public JsonValidator(File tba_file, String type) {
-        super(tba_file, type);
+    public JsonValidator(File tba_file, String type, String bundle_prefix) {
+        super(tba_file, type, bundle_prefix);
     }
 
     private boolean check_duplicated_key() {

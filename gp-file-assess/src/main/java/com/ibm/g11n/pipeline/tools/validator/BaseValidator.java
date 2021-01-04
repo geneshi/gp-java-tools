@@ -8,7 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,14 +43,16 @@ public class BaseValidator {
     protected String bundleId;
     protected String xliffFile;
 
-    public BaseValidator(File tba_file, String type) {
+    public BaseValidator(File tba_file, String type, String bundle_prefix) {
         this.tba_file = tba_file;
         this.type = type;
         this.content = this.getFileContent(this.tba_file);
         this.filter = ResourceFilterFactory.getResourceFilter(type);
         this.kvPattern = "\"(.*?)\" {0,3}:\\s{0,20}\"(.*?)\"";
         this.pupPattern = "!.+$|[\\$@#&]|%.*?%|\\(\\(.*?\\)\\)|\\[\\[\\.*?]\\]";
-        this.bundleId = "bundle." + System.currentTimeMillis();
+        this.bundleId = this.tba_file.getName() + "_" + new SimpleDateFormat ("yyyyMMddhhmmss").format(new Date());
+        if(bundle_prefix != null)
+            this.bundleId = bundle_prefix + "_" + this.bundleId;
         this.xliffFile = System.getProperty("user.dir") + System.getProperty("file.separator") + this.bundleId
                 + ".xliff";
     }
