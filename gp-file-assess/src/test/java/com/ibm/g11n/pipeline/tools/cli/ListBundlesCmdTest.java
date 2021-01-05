@@ -25,16 +25,25 @@ import org.junit.Test;
  */
 public class ListBundlesCmdTest {
 
-    @Test
+    
     public void test() {
         FakebrokerMgr.run("list");
     }
     
-    @Test
+    
     public void testt() {
         String[] testFiles = {"E:\\\\notExist.json", "E:\\notJsonRoot.json", "E:\\duplicateKey.json", "E:\\test.json"};
         for(int i = 0; i < testFiles.length; i++) {
             String[] cmd = {"assess-file", "-j", "E:\\GP\\Github\\gp-java-tools\\test-gpconfig.json", "-t", "JSON", "-f", testFiles[i]};
+            GPCmd.main(cmd);
+        }
+    }
+    
+    @Test
+    public void testJava() {
+        String[] testFiles = {"/Users/garycylin/GP/jenkins_plugin/gp-jenkins-plugin-test/i18n/test2.properties"};
+        for(int i = 0; i < testFiles.length; i++) {
+            String[] cmd = {"assess-file", "-j", "/Users/garycylin/GP/gp-solution-subgroup-1.json", "-t", "JAVA", "-f", testFiles[i]};
             GPCmd.main(cmd);
         }
     }

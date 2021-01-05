@@ -8,6 +8,7 @@ import com.ibm.g11n.pipeline.client.ServiceClient;
 import com.ibm.g11n.pipeline.resfilter.ResourceFilter;
 import com.ibm.g11n.pipeline.resfilter.ResourceFilterFactory;
 import com.ibm.g11n.pipeline.tools.validator.BaseValidator;
+import com.ibm.g11n.pipeline.tools.validator.JavaValidator;
 import com.ibm.g11n.pipeline.tools.validator.JsonValidator;
 
 /**
@@ -50,6 +51,10 @@ public class FileAssessCmd extends BaseCmd {
                 case "JSON":
                     JsonValidator jv = new JsonValidator(tba_file, type);
                     jv.check(jsonCreds, gpClient);
+                    break;
+                case "JAVA":
+                    JavaValidator jav = new JavaValidator(tba_file, type);
+                    jav.check(jsonCreds, gpClient);
                     break;
                 default:
                     BaseValidator validator = new BaseValidator(tba_file, type);
