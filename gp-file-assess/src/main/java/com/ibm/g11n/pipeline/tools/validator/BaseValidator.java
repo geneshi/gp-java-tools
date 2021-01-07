@@ -56,6 +56,29 @@ public class BaseValidator {
         this.xliffFile = System.getProperty("user.dir") + System.getProperty("file.separator") + this.bundleId
                 + ".xliff";
     }
+    
+    public void check(String jsonCreds, ServiceClient gpClient) {
+        if (this.preCheck()) {
+            this.tryUpload(jsonCreds);
+            this.downloadXliff(gpClient);
+            this.checkPIICount();
+            this.printPotentialUnprotected();
+            this.postCheck();
+        }
+    }
+    
+    protected boolean preCheck() {
+        checkDNTTag();
+        return true;
+    };
+    
+    public void checkDNTTag() {
+        String dntNotePattern = "START NON-TRANSLATABLE";
+        Pattern r = Pattern.compile(dntNotePattern);
+        Matcher m = r.matcher(this.content);
+        while (m.find())
+            System.err.println("Warning - There are NON-TRANSLATABLE notes in the file, you'd better put them elsewhere!");
+    }
 
     protected void tryUpload(String jsonCreds) {
         // java -jar gp-cli.jar create -b MyNewBundle -l en,fr,de -j
@@ -112,6 +135,20 @@ public class BaseValidator {
         }
     }
 
+    protected void checkPIICount() {
+        int countInSource = countInSource();
+        int countInXliff = countPattern(getFileContent(new File(this.xliffFile)), "<unit id=");
+
+        if (countInSource == countInXliff)
+            System.out.println("Pass - PII count checked");
+        else
+            System.err.println("Failed - PII count mismatch, please investigate: " + countInSource + ":" + countInXliff);
+    }
+    
+    protected int countInSource() {
+        return countPattern(this.content, this.kvPattern) - count_duplicated_key();
+    }
+    
     protected int countPattern(String str, String pattern) {
         int count = 0;
         Pattern r = Pattern.compile(pattern);
@@ -121,25 +158,21 @@ public class BaseValidator {
         return count;
     }
 
-    protected void checkPIICount() {
-        int countInSource = countPattern(this.content, this.kvPattern);
-        int countInXliff = countPattern(getFileContent(new File(this.xliffFile)), "<unit id=");
-
-        if (countInSource == countInXliff)
-            System.out.println("Pass - PII count checked");
-        else
-            System.err.println("Failed - PII count mismatch, please investigate: " + countInSource + ":" + countInXliff);
-    }
-
-    public void check(String jsonCreds, ServiceClient gpClient) {
-        if (this.preCheck()) {
-            this.tryUpload(jsonCreds);
-            this.downloadXliff(gpClient);
-            this.checkPIICount();
-            this.printPotentialUnprotected();
+    protected int count_duplicated_key() {
+        HashSet<String> uniqueKeys= new HashSet<String>();
+        Pattern r = Pattern.compile(this.kvPattern);
+        Matcher m = r.matcher(this.content);
+        int all = 0;
+        while(m.find()) {
+            all++;
+            uniqueKeys.add(m.group(1));         
         }
+        int count_duplicated = all-uniqueKeys.size();
+        if(count_duplicated != 0)
+            System.out.println("Warning: There are duplicated keys in file: " + this.tba_file.getAbsolutePath());
+        return count_duplicated;
     }
-
+    
     protected void printPotentialUnprotected() {
         HashMap<String, String> lkv = this.getLeftValues(this.xliffFile);
         boolean log = false;
@@ -148,7 +181,7 @@ public class BaseValidator {
             Matcher m = r.matcher(value);
             if (m.find()) {
                 if (log == false) {
-                    System.err.println("Failed - Please check below strings to identify unprotected patterns");
+                    System.err.println("Warning - Please check below strings to identify unprotected patterns");
                     log = true;
                 }
                 System.out.println(value);
@@ -222,7 +255,7 @@ public class BaseValidator {
         }
     }
 
-    protected boolean preCheck() {
+    protected boolean postCheck() {
         return true;
-    };
+    }
 }

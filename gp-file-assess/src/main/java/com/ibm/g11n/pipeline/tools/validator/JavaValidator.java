@@ -10,9 +10,20 @@ public class JavaValidator extends BaseValidator {
     public JavaValidator(File tba_file, String type, String bundle_prefix) {
         super(tba_file, type, bundle_prefix);
     }
-
+    
     @Override
-    protected void checkPIICount() {
+    protected boolean preCheck() {
+        checkDNTTag();
+        checkMSGFormatTag();
+        return true;
+    }
+    
+    protected void checkMSGFormatTag() {
+        //TODO
+    }
+    
+    @Override
+    protected int countInSource() {
         Properties p = new Properties();
         try {
             p.load(new FileInputStream(this.tba_file));
@@ -20,11 +31,6 @@ public class JavaValidator extends BaseValidator {
             e.printStackTrace();
         }
         int countInSource = p.size();
-        int countInXliff = countPattern(getFileContent(new File(this.xliffFile)), "<unit id=");
-
-        if (countInSource == countInXliff)
-            System.out.println("Pass - PII count checked");
-        else
-            System.err.println("Failed - PII count mismatch, please investigate: " + countInSource + ":" + countInXliff);
+        return countInSource;
     }
 }

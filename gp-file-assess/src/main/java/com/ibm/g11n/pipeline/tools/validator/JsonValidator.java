@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,28 +22,17 @@ public class JsonValidator extends BaseValidator {
         super(tba_file, type, bundle_prefix);
     }
 
-    private boolean check_duplicated_key() {
-        ArrayList<String> kl= new ArrayList<String>();
-        Pattern r = Pattern.compile(this.kvPattern);
-        Matcher m = r.matcher(this.content);
-        while(m.find()) {
-            String key = m.group(1);
-            if(kl.contains(key)) {
-                System.err.println("Failed - Duplicated key found in json file, please remove them and try again: " + m.group(1));
-                return false;
-            } else {
-                kl.add(key);
-            }
-        }
-        System.out.println("Pass - Not found duplicated keys in JSON file");
-        return true;
+    @Override
+    protected boolean preCheck() {
+        checkDNTTag();
+        return this.checkRootElement();
     }
     
     private boolean checkRootElement() {
         try (InputStreamReader reader = new InputStreamReader(new BomInputStream(new FileInputStream(this.tba_file)), StandardCharsets.UTF_8)) {
             JsonElement root = new JsonParser().parse(reader);
             if (!root.isJsonObject()) {
-                System.err.println("Failed - The root element is not a Json Object, please fix it and try again!");
+                System.err.println("Blocker - The root element is not a Json Object, please fix it and try again!");
                 return false;
             }
         } catch (JsonParseException e) {
@@ -57,8 +47,4 @@ public class JsonValidator extends BaseValidator {
         return true;
     }
 
-    @Override
-    protected boolean preCheck() {
-        return this.check_duplicated_key() && this.checkRootElement();
-    }
 }
