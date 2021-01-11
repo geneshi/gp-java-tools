@@ -48,6 +48,7 @@ public class FileAssessCmdTest {
     public void testJava() {
         File resFolder = new File("src/test/resource/java/");
         for(File resFile:resFolder.listFiles()) {
+            System.out.println(String.format("Checking [%s]...", resFile.getName()));
             String[] cmd = {"assess-file", "-j", cresFilePath, "-t", "JAVA", "-b", "ABC", "-f", resFile.getAbsolutePath()};
             GPCmd.main(cmd);
         }
