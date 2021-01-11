@@ -35,7 +35,7 @@ public class FileAssessCmdTest {
         cresFilePath = new File(GPCONFIG_FILE).getAbsolutePath();
     }
     
-    //@Test
+    @Test
     public void testJson() {
         File resFolder = new File("src/test/resource/json/");
         for(File resFile:resFolder.listFiles()) {
