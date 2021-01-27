@@ -73,11 +73,26 @@ public class BaseValidator {
     };
     
     public void checkDNTTag() {
-        String dntNotePattern = "START NON-TRANSLATABLE";
-        Pattern r = Pattern.compile(dntNotePattern);
-        Matcher m = r.matcher(this.content);
-        while (m.find())
-            System.err.println("Warning - There are NON-TRANSLATABLE notes in the file, you'd better put them elsewhere!");
+        Set<String> dntPatterns = new HashSet<String>();
+
+        // Below are the 4 major DNT comments identified
+        dntPatterns.add("START NON-TRANSLATABLE");
+        dntPatterns.add("Do_Not_Translate");
+        dntPatterns.add("do not translate");
+        dntPatterns.add("{{no_translation}}");
+
+        Set<String> matchedDNTPatterns = new HashSet<String>();
+        for (String dntPattern : dntPatterns) {
+            if (this.content.contains(dntPattern)) {
+                matchedDNTPatterns.add(dntPattern);
+            }
+        }
+        if (!matchedDNTPatterns.isEmpty()) {
+            System.err.println(
+                    "Warning - There are possible DNT (Do not translate) comments in the file, please check and separate non-translatable content elsewhere: "
+                            + matchedDNTPatterns.toString());
+
+        }
     }
 
     protected void tryUpload(String jsonCreds) {
