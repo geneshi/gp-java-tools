@@ -161,31 +161,16 @@ public class BaseValidator {
     }
     
     protected int countInSource() {
-        return countPattern(this.content, this.kvPattern) - count_duplicated_key();
+        return countPattern(this.content, this.kvPattern);
     }
     
     protected int countPattern(String str, String pattern) {
         int count = 0;
-        Pattern r = Pattern.compile(pattern);
+        Pattern r = Pattern.compile(pattern, Pattern.MULTILINE);
         Matcher m = r.matcher(str);
         while (m.find())
             count++;
         return count;
-    }
-
-    protected int count_duplicated_key() {
-        HashSet<String> uniqueKeys= new HashSet<String>();
-        Pattern r = Pattern.compile(this.kvPattern);
-        Matcher m = r.matcher(this.content);
-        int all = 0;
-        while(m.find()) {
-            all++;
-            uniqueKeys.add(m.group(1));         
-        }
-        int count_duplicated = all-uniqueKeys.size();
-        if(count_duplicated != 0)
-            System.out.println("Warning: There are duplicated keys in file: " + this.tba_file.getAbsolutePath());
-        return count_duplicated;
     }
     
     protected void printPotentialUnprotected() {

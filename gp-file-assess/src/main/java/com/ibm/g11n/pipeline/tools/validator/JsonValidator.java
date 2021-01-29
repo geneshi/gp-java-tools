@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,5 +47,17 @@ public class JsonValidator extends BaseValidator {
         System.out.println("Pass - The root object is JSON Object");
         return true;
     }
-
+    
+    @Override
+    protected int countInSource() {
+        int generalCount = this.countPattern(this.content, this.kvPattern);
+        int arrayItemCount = 0;
+        Pattern r = Pattern.compile("\\[[^:]*?\\]");
+        Matcher m = r.matcher(this.content);
+        while (m.find()) {
+            String[] strArray = m.group(0).split("\",");
+            arrayItemCount += strArray.length;
+        }
+        return generalCount + arrayItemCount;
+    }
 }

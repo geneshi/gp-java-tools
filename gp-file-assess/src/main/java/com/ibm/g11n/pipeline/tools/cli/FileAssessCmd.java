@@ -7,7 +7,9 @@ import com.beust.jcommander.Parameters;
 import com.ibm.g11n.pipeline.client.ServiceClient;
 import com.ibm.g11n.pipeline.resfilter.ResourceFilter;
 import com.ibm.g11n.pipeline.resfilter.ResourceFilterFactory;
+import com.ibm.g11n.pipeline.tools.validator.AMDJSValidator;
 import com.ibm.g11n.pipeline.tools.validator.BaseValidator;
+import com.ibm.g11n.pipeline.tools.validator.GlobalizedJSValidator;
 import com.ibm.g11n.pipeline.tools.validator.JavaValidator;
 import com.ibm.g11n.pipeline.tools.validator.JsonValidator;
 
@@ -58,11 +60,17 @@ public class FileAssessCmd extends BaseCmd {
                 case "JSON":
                     validator = new JsonValidator(tba_file, type, bundle_prefix);
                     break;
+                case "GLOBALIZEJS":
+                    validator = new GlobalizedJSValidator(tba_file, type, bundle_prefix);
+                    break;
                 case "JAVA":
                 case "JAVAUTF8":
                 case "JAVAMSG":
                 case "JAVAMSGUTF8":
                     validator = new JavaValidator(tba_file, type, bundle_prefix);
+                    break;
+                case "AMDJS":
+                    validator = new AMDJSValidator(tba_file, type, bundle_prefix);
                     break;
                 default:
                     validator = new BaseValidator(tba_file, type, bundle_prefix);

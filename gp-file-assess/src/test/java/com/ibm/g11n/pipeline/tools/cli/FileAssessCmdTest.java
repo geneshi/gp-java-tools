@@ -30,14 +30,31 @@ public class FileAssessCmdTest {
     
     static String cresFilePath;
     @BeforeClass
-    public static void test1() {
+    public static void getCresFilePath() {
         String GPCONFIG_FILE = System.getProperty("GP_CONFIG_FILE", "../test-gpconfig.json");
         cresFilePath = new File(GPCONFIG_FILE).getAbsolutePath();
     }
     
     @Test
+    public void cleanBundles() {
+        String[] cmd = {"clean", "-j", cresFilePath};
+        GPCmd.main(cmd);
+    }
+    
+    @Test
+    public void cleanXliffs() {
+        File resFolder = new File(".");
+        for(File resFile:resFolder.listFiles()) {
+            if(resFile.getName().endsWith("xliff")) {
+                resFile.delete();
+                System.out.println("removed " + resFile.getName());
+            }
+        }
+    }
+    
+    @Test
     public void testJson() {
-        File resFolder = new File("src/test/resource/json/");
+        File resFolder = new File("src/test/resource/json");
         for(File resFile:resFolder.listFiles()) {
             System.out.println(String.format("Checking [%s]...", resFile.getName()));
             String[] cmd = {"assess-file", "-j", cresFilePath, "-t", "JSON", "-f", resFile.getAbsolutePath()};
@@ -54,4 +71,26 @@ public class FileAssessCmdTest {
             GPCmd.main(cmd);
         }
     }
+    
+    @Test
+    public void testGlobalizedJSJson() {
+        File resFolder = new File("src/test/resource/globalizedJSJson");
+        for(File resFile:resFolder.listFiles()) {
+            System.out.println(String.format("Checking [%s]...", resFile.getName()));
+            String[] cmd = {"assess-file", "-j", cresFilePath, "-t", "GLOBALIZEJS", "-f", resFile.getAbsolutePath()};
+            GPCmd.main(cmd);
+        }
+    }
+    
+    @Test
+    public void testAMDJSJson() {
+        File resFolder = new File("src/test/resource/amdjs");
+        for(File resFile:resFolder.listFiles()) {
+            System.out.println(String.format("Checking [%s]...", resFile.getName()));
+            String[] cmd = {"assess-file", "-j", cresFilePath, "-t", "AMDJS", "-f", resFile.getAbsolutePath()};
+            GPCmd.main(cmd);
+        }
+    }
+    
+    
 }
