@@ -39,6 +39,7 @@ public class FileAssessCmdTest {
     public void testJson() {
         File resFolder = new File("src/test/resource/json/");
         for(File resFile:resFolder.listFiles()) {
+            System.out.println(String.format("Checking [%s]...", resFile.getName()));
             String[] cmd = {"assess-file", "-j", cresFilePath, "-t", "JSON", "-f", resFile.getAbsolutePath()};
             GPCmd.main(cmd);
         }

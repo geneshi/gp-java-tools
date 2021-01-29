@@ -1,0 +1,115 @@
+{
+  "currency": "{{amount, currency}}",
+  "dust": {
+    "APP_DESCRIPTION_backup": "Order {{no_translation}}Cloud Backup{{/no_translation}}",
+    "APP_TITLE_backup": "Order {{no_translation}}Cloud Backup{{/no_translation}}"
+  },
+  "container": {
+    "BACKUP_DESCRIPTION": "{{no_translation}}Cloud Backup{{/no_translation}}",
+    "BACKUP_LINK": "View all"
+  },
+  "demo": {
+    "LINK": "https://www.ibm.com",
+    "LOADING_TEXT": "Please wait. Loading..."
+  },
+  "form": {
+    "location": {
+      "title": "Location",
+      "region": {
+        "naWest": "US West",
+        "naSouth": "US South",
+        "naEast": "US East",
+        "southAmerica": "South America",
+        "europe": "Europe",
+        "asiaPacific": "Asia-Pacific",
+        "other": "Other"
+      }
+    }
+  },
+  "orderDetails": {
+    "ATTACH_BACKUP": "Attach Backup",
+    "CHOOSE_DEVICE_DEFAULT": "Choose Device",
+    "DEVICE_LABEL": "Select Device",
+    "GB_TEXT": "GB",
+    "LOCATION_LABEL": "Location",
+    "PLUGINS_LABEL": "Plugins (Optional)",
+    "SIZE_DEFAULT": "Choose Size",
+    "SIZE_LABEL": "Size GB",
+    "plugins": {
+      "UNITS_PER_MONTH_TEXT": "$ per month"
+    }
+  },
+  "summary": {
+    "empty_labels": {
+      "iops": "IOPS",
+      "location": "Location",
+      "os": "OS type",
+      "size": "GB storage space",
+      "tier": "IOPS/GB",
+      "total": "—"
+    },
+    "CREATE_BUTTON": "Create",
+    "DEVICE_LABEL": "Device",
+    "GB_TEXT": "GB",
+    "LOCATION_LABEL": "Location",
+    "ORDER_SUMMARY_LABEL": "Order Summary",
+    "PER_MONTH_TEXT": "/month",
+    "PLUGIN_LABEL": "Plugin",
+    "PROMO_CODE_DEFAULT": "Enter Promo code",
+    "PROMO_CODE_TITLE": "Apply promo code",
+    "PROMO_CODE_TOO_LONG": "Promo code is too long",
+    "PROMO_LABEL": "PROMO",
+    "STORAGE_SIZE_LABEL": "Storage Size",
+    "SUB_TOTAL_LABEL": "Subtotal",
+    "TERMS_CONDITIONS_LABEL": "I have read the Master Service Agreement and agree to the terms therein",
+    "TERMS_LINK": "Master Service Agreement",
+    "TOTAL_DUE_TEXT": "Total due per month",
+    "VIEW_DOCS_LINK": "View Docs",
+    "upgrade": {
+      "upgrade": "Upgrade",
+      "upgradeInProgress": "Upgrade In Progress"
+    }
+  },
+  "promo": {
+    "apply": "Apply",
+    "title": "Apply promo code",
+    "placeholder": "Enter promo code",
+    "invalid": "Failed to apply promo code: {{msg}}",
+    "applied": "Promo code applied",
+    "totalPerMonth": "New total per month",
+    "notax": "* Price does not include any tax",
+    "tooLong": "Promo code is too long"
+  },
+  "estimator": {
+    "addToEstimate": "Add To Estimate",
+    "title": "{{no_translation}}Cloud Backup{{/no_translation}}",
+    "subtitle": "{{value}} GB storage space",
+    "description": "A fast and flexible backup solution that is managed by IBM Cloud and provides capacity options to scale perfectly with your needs.",
+    "device": "Device: {{value}}",
+    "location": "Location: {{value}}",
+    "size": "Size: {{value}} GB",
+    "monthlyCharge": "Monthly charge"
+  },
+  "notification": {
+    "CLICK_HERE_LINK": "Click here",
+    "NO_DEVICES_SUBTITLE": "to order your Bare Metal or Virtual server that you can attach your Backup to.",
+    "NO_DEVICES_TITLE": "Start with your compute options."
+  },
+  "order": {
+    "success": {
+      "title": "Order Placed",
+      "message": "Your order has been successfully placed.",
+      "caption": "Order Number: {{value}}"
+    },
+    "error": {
+      "title": "Oh no!",
+      "message": "A problem occurred in the ordering process.",
+      "button": "Close",
+      "messagePrompt": "ERROR: ",
+      "caption": "Error: {{error}}"
+    },
+    "iconDescription": "Close button",
+    "dataMissing": "There was a problem getting the order information.",
+    "unexpected": "There was an unexpected problem placing the order."
+  }
+}
